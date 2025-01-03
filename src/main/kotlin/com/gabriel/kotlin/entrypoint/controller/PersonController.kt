@@ -1,9 +1,10 @@
 package com.gabriel.kotlin.entrypoint.controller
 
+import com.gabriel.kotlin.core.adapter.service.PersonServiceAdapter
+import com.gabriel.kotlin.entrypoint.dto.request.PersonRequestDTO
+import com.gabriel.kotlin.entrypoint.dto.response.PersonResponseDTO
+import com.gabriel.kotlin.entrypoint.mapper.PersonEntrypointMapper
 import com.gabriel.kotlin.infrastructure.entity.PersonEntity
-import com.gabriel.kotlin.core.exception.PersonNotFoundException
-import com.gabriel.kotlin.infrastructure.repository.PersonRepository
-import com.gabriel.kotlin.entrypoint.dto.PersonRequestDTO
 import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
@@ -13,23 +14,20 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/persons")
-class PersonController(private val repository: PersonRepository) {
+class PersonController(private val personService: PersonServiceAdapter) {
 
     @GetMapping
-    fun getAllPersons(): List<PersonEntity> {
-        val persons = repository.findAll().ifEmpty {
-            throw PersonNotFoundException("No persons found")
+    fun getAllPersons(): List<PersonResponseDTO> {
+        val persons = personService.getAllPeople()
+        return persons.map {
+            PersonEntrypointMapper.toResponse(it)
         }
-        return persons
     }
 
     @PostMapping
-    fun createPerson(@Valid @RequestBody personRequestDTO: PersonRequestDTO): PersonEntity {
+    fun createPerson(@Valid @RequestBody personRequestDTO: PersonRequestDTO): PersonResponseDTO {
 
-        val personEntity = PersonEntity(
-            name = personRequestDTO.name,
-            age = personRequestDTO.age!!
-        )
-        return repository.save(personEntity)
+        val createPerson = personService.createPerson(personRequestDTO.name, personRequestDTO.age!!)
+        return PersonEntrypointMapper.toResponse(createPerson)
     }
 }

@@ -1,4 +1,4 @@
-package com.gabriel.kotlin.entrypoint.dto
+package com.gabriel.kotlin.entrypoint.dto.request
 
 import jakarta.validation.constraints.Min
 import jakarta.validation.constraints.NotBlank

@@ -13,7 +13,7 @@ import org.mockito.Mockito.*
 import org.mockito.junit.jupiter.MockitoExtension
 
 @ExtendWith(MockitoExtension::class)
-class PersonEntityControllerTest {
+class PersonControllerTest {
 
     @Mock
     private lateinit var repository: PersonRepository

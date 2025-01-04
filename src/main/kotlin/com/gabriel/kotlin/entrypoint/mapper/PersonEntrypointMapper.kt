@@ -9,6 +9,7 @@ object PersonEntrypointMapper {
 
     fun toResponse(model: PersonModel): PersonResponseDTO {
         return PersonResponseDTO(
+            id = model.id!!,
             name = model.name,
             age = model.age
         )

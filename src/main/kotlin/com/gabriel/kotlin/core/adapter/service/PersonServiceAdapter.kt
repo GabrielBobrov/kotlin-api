@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service
 @Service
 class PersonServiceAdapter(private val personRepository: IPersonRepositoryPort) : IPersonServicePort {
 
-    override fun createPerson(name: String, age: Int): PersonModel {
-        val person = personRepository.savePerson(name, age)
+    override fun createPerson(personModel: PersonModel): PersonModel {
+        val person = personRepository.savePerson(personModel.name, personModel.age)
         return PersonCoreMapper.toModel(person)
     }
 

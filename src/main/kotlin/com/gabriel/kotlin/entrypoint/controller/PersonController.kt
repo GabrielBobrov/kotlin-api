@@ -4,7 +4,6 @@ import com.gabriel.kotlin.core.adapter.service.PersonServiceAdapter
 import com.gabriel.kotlin.entrypoint.dto.request.PersonRequestDTO
 import com.gabriel.kotlin.entrypoint.dto.response.PersonResponseDTO
 import com.gabriel.kotlin.entrypoint.mapper.PersonEntrypointMapper
-import com.gabriel.kotlin.infrastructure.entity.PersonEntity
 import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
@@ -27,7 +26,7 @@ class PersonController(private val personService: PersonServiceAdapter) {
     @PostMapping
     fun createPerson(@Valid @RequestBody personRequestDTO: PersonRequestDTO): PersonResponseDTO {
 
-        val createPerson = personService.createPerson(personRequestDTO.name, personRequestDTO.age!!)
+        val createPerson = personService.createPerson(PersonEntrypointMapper.toModel(personRequestDTO))
         return PersonEntrypointMapper.toResponse(createPerson)
     }
 }
